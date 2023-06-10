@@ -17,7 +17,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.4"
+        kotlinCompilerExtensionVersion = "1.3.0"
     }
     packagingOptions {
         resources {
@@ -29,21 +29,22 @@ android {
             isMinifyEnabled = false
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
+
     implementation(project(":shared"))
-    implementation("androidx.compose.ui:ui:1.4.0")
-    implementation("androidx.compose.ui:ui-tooling:1.4.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
-    implementation("androidx.compose.foundation:foundation:1.4.0")
-    implementation("androidx.compose.material:material:1.4.0")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    val composVersion = "1.2.1"
+    implementation(project(":shared"))
+    implementation("androidx.compose.ui:ui:$composVersion")
+    implementation("androidx.compose.ui:ui-tooling:$composVersion")
+    implementation("androidx.compose.ui:ui-tooling-preview:$composVersion")
+    implementation("androidx.compose.foundation:foundation:$composVersion")
+    implementation("androidx.compose.material:material:$composVersion")
+    implementation("androidx.activity:activity-compose:1.5.1")
+
+    implementation(Kotlin.DateTime)
+
+    implementation(Navigation.Compose)
+    implementation(LifeCycle.ViewModelKtx)
 }
