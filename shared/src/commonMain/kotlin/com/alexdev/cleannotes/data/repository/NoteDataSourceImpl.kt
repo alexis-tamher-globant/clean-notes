@@ -3,44 +3,27 @@ package com.alexdev.cleannotes.data.repository
 import com.alexdev.cleannotes.domain.model.Note
 import com.alexdev.cleannotes.domain.repository.NoteDataSource
 import com.alexdev.cleannotes.util.DateTimeUtil
-import com.alexdev.cleannotes.util.randomColor
+import com.alexdev.cleannotes.util.toModel
+import com.alexdev.local_storage.database.NoteDataBase
 
-typealias dataSource = NoteDataSourceImpl
-
-object NoteDataSourceImpl : NoteDataSource {
-
-  private val notes = (1..6).toList().map {
-    Note(
-      it.toLong(),
-      "title $it",
-      "this is the content $it",
-      randomColor(),
-      DateTimeUtil.now()
-    )
-  }.toMutableList()
+class NoteDataSourceImpl(
+  db: NoteDataBase
+) : NoteDataSource {
+  private val queries = db.noteQueries
 
   override suspend fun insertNote(note: Note) {
-    if (note.id == -1L) {
-      val id = (1..100).filter { it -> !notes.map { it.id }.contains(it.toLong()) }.random().toLong()
-      val newNote = note.copy(id = id)
-      notes.add(newNote)
-    } else {
-      notes.indexOfFirst { it.id == note.id }.run {
-        notes.set(this, note)
-      }
-    }
-
+    queries.insertNote(note.id, note.title, note.content, note.color, DateTimeUtil.toEpochMillis(note.date))
   }
 
   override suspend fun getNoteById(id: Long): Note? {
-    return notes.firstOrNull { note -> note.id == id }
+    return queries.getNoteById(id).executeAsOneOrNull()?.toModel()
   }
 
-  override suspend fun getAllNotes(): List<Note> = notes.sortedBy { it.id }
+  override suspend fun getAllNotes(): List<Note> {
+    return queries.getAllNotes().executeAsList().map { note -> note.toModel() }
+  }
 
   override suspend fun deleteNoteById(id: Long) {
-    notes.firstOrNull { it.id == id }?.run {
-      notes.remove(this)
-    }
+    queries.deleteNoteById(id)
   }
 }

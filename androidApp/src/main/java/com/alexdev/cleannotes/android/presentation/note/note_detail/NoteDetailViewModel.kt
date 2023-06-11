@@ -3,8 +3,8 @@ package com.alexdev.cleannotes.android.presentation.note.note_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexdev.cleannotes.data.repository.dataSource
 import com.alexdev.cleannotes.domain.model.Note
+import com.alexdev.cleannotes.domain.repository.NoteDataSource
 import com.alexdev.cleannotes.util.DateTimeUtil
 import com.alexdev.cleannotes.util.randomColor
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class NoteDetailViewModel(
-  private val savedStateHandle: SavedStateHandle
+  private val savedStateHandle: SavedStateHandle,
+  private val dataSource: NoteDataSource
 ) : ViewModel() {
   private val title = savedStateHandle.getStateFlow("title", "")
   private val content = savedStateHandle.getStateFlow("content", "")

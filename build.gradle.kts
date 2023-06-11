@@ -6,6 +6,7 @@ plugins {
     id("com.android.library").version(gradleVersion).apply(false)
     kotlin("android").version(kotlinVersion).apply(false)
     kotlin("multiplatform").version(kotlinVersion).apply(false)
+    id(SqlDelight.GradlePlugin).version(Versions.SqlDelight).apply(false)
 }
 
 tasks.register("clean", Delete::class) {

@@ -1,10 +1,17 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("com.squareup.sqldelight")
 }
 
 kotlin {
-    android ()
+    android{
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
     
     listOf(
         iosX64(),
@@ -12,15 +19,14 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "shared"
+            baseName = "local_storage"
         }
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Kotlin.DateTime)
-                implementation(project(":local_storage"))
+                implementation(SqlDelight.RuntTime)
             }
         }
         val commonTest by getting {
@@ -28,11 +34,18 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(SqlDelight.AndroidDriver)
+            }
+        }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
+            dependencies {
+                implementation(SqlDelight.NativeDriver)
+            }
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
@@ -50,8 +63,15 @@ kotlin {
     }
 }
 
+sqldelight {
+    database("NoteDataBase") {
+        packageName = "com.alexdev.local_storage.database"
+        sourceFolders = listOf("sqldelight")
+    }
+}
+
 android {
-    namespace = "com.alexdev.cleannotes"
+    namespace = "com.alexdev.local_storage"
     compileSdk = 33
     defaultConfig {
         minSdk = 24
