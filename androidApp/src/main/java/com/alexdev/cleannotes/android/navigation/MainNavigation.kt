@@ -29,7 +29,7 @@ fun MainNavigation() {
         }
       )
     ) { navBackStackEntry ->
-      val id = navBackStackEntry.arguments?.getLong("noteId") ?: -1L
+      val id = navBackStackEntry.arguments?.getLong("noteId")?.let { if(it == -1L) null else it }
       NoteDetailScreen(noteId = id, onSavedNote = { navController.popBackStack() })
     }
   }

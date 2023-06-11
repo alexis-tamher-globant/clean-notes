@@ -1,11 +1,12 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("com.squareup.sqldelight")
 }
 
 kotlin {
     android ()
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -20,7 +21,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Kotlin.DateTime)
-                implementation(project(":local_storage"))
+                implementation(SqlDelight.RuntTime)
+                implementation(Koin.Core)
             }
         }
         val commonTest by getting {
@@ -28,11 +30,18 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(SqlDelight.AndroidDriver)
+            }
+        }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
+            dependencies {
+                implementation(SqlDelight.NativeDriver)
+            }
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
@@ -47,6 +56,13 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
+    }
+}
+
+sqldelight {
+    database("NoteDataBase") {
+        packageName = "com.alexdev.cleannotes.database"
+        sourceFolders = listOf("sqldelight")
     }
 }
 

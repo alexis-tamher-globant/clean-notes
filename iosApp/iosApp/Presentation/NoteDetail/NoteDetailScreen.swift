@@ -11,7 +11,7 @@ import SwiftUI
 
 struct NoteDetailScreen: View {
     @Environment(\.presentationMode) var presentation
-    var noteId: Int64
+    var noteId: Int64?
     
     @StateObject var viewModel = NoteDetailViewModel()
     
@@ -37,8 +37,8 @@ struct NoteDetailScreen: View {
             Spacer()
         }
         .onAppear {
-            if noteId != -1 {
-                viewModel.loadNote(noteId: noteId)
+            if noteId != nil {
+                viewModel.loadNote(noteId: noteId!)
             }
         }
         .padding()

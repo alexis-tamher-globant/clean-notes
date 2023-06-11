@@ -3,6 +3,7 @@ object Versions {
   const val LifeCycle = "1.6.0"
   const val Navigation = "2.5.0"
   const val SqlDelight = "1.5.3"
+  const val koin = "3.2.0"
 }
 
 object Navigation {
@@ -20,4 +21,10 @@ object SqlDelight {
   const val AndroidDriver = "com.squareup.sqldelight:android-driver:${Versions.SqlDelight}"
   const val NativeDriver = "com.squareup.sqldelight:native-driver:${Versions.SqlDelight}"
   const val GradlePlugin = "com.squareup.sqldelight"
+}
+
+object Koin {
+  const val Core = "io.insert-koin:koin-core:${Versions.koin}"
+  const val Android = "io.insert-koin:koin-android:${Versions.koin}"
+  const val AndroidCompose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
 }

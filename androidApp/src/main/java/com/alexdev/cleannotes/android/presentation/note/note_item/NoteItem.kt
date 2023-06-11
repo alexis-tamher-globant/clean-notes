@@ -39,7 +39,7 @@ fun NoteItem(
       .fillMaxWidth()
       .background(Color(note.color))
       .clickable {
-        onNoteTapped(note.id)
+        onNoteTapped(note.id!!)
       }
       .padding(12.dp)
   ) {
@@ -60,7 +60,7 @@ fun NoteItem(
           modifier = Modifier
             .clip(RoundedCornerShape(18.dp))
             .clickable {
-              onDeleteTapped(note.id)
+              onDeleteTapped(note.id!!)
             })
       }
       Text(text = note.content)

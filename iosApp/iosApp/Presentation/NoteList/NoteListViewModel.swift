@@ -13,7 +13,7 @@ extension NoteListScreen {
     
     @MainActor class NoteListViewModel: ObservableObject {
         
-        private let dataSource = NoteDataSourceImpl()
+        private let dataSource = KoinHelper().dataSource
         private let noteFilter = NoteFilter()
         private var allNotes = [Note]()
         @Published private(set) var notes = [Note]()

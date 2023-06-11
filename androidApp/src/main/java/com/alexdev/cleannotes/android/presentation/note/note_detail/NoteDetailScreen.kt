@@ -19,18 +19,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun NoteDetailScreen(
-  noteId: Long = 0,
+  noteId: Long?,
   onSavedNote: () -> Unit,
-  viewModel: NoteDetailViewModel = viewModel(),
+  viewModel: NoteDetailViewModel = getViewModel(),
 ) {
   val state by viewModel.state.collectAsState()
 
   LaunchedEffect(key1 = null) {
-    if(noteId != -1L) {
+    noteId?.run {
       viewModel.loadNote(noteId)
     }
   }
@@ -78,5 +78,5 @@ fun NoteDetailScreen(
 @Preview
 @Composable
 fun PreviewNoteDetailScreen() {
-  NoteDetailScreen(onSavedNote = {})
+  NoteDetailScreen(null, onSavedNote = {})
 }

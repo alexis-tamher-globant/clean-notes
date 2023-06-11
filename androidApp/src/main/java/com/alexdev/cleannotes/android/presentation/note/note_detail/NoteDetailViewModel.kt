@@ -22,7 +22,7 @@ class NoteDetailViewModel(
     "color",
     randomColor()
   )
-  private var currentId: Long = -1L
+  private var currentId: Long? = null
 
   val state = combine(title, content, color) { title, content, color ->
     NoteDetailState(title, content, color)
@@ -49,16 +49,19 @@ class NoteDetailViewModel(
   }
 
   fun saveNote() {
+    val note = Note(
+      currentId,
+      title.value,
+      content.value,
+      color.value,
+      DateTimeUtil.now()
+    )
     viewModelScope.launch {
-      dataSource.insertNote(
-        Note(
-          currentId,
-          title.value,
-          content.value,
-          color.value,
-          DateTimeUtil.now()
-        )
-      )
+      if (currentId == null) {
+        dataSource.insertNote(note)
+      } else {
+        dataSource.updateNote(note)
+      }
     }
   }
 }

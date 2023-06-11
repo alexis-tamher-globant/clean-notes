@@ -1,18 +1,35 @@
 package com.alexdev.cleannotes.data.repository
 
+import com.alexdev.cleannotes.data.driver.DatabaseDriverFactory
+import com.alexdev.cleannotes.database.NoteDataBase
 import com.alexdev.cleannotes.domain.model.Note
 import com.alexdev.cleannotes.domain.repository.NoteDataSource
 import com.alexdev.cleannotes.util.DateTimeUtil
 import com.alexdev.cleannotes.util.toModel
-import com.alexdev.local_storage.database.NoteDataBase
 
 class NoteDataSourceImpl(
-  db: NoteDataBase
+  driver: DatabaseDriverFactory,
 ) : NoteDataSource {
+  private val db = NoteDataBase.invoke(driver.createDriver())
   private val queries = db.noteQueries
 
   override suspend fun insertNote(note: Note) {
-    queries.insertNote(note.id, note.title, note.content, note.color, DateTimeUtil.toEpochMillis(note.date))
+    queries.insertNote(
+      note.title,
+      note.content,
+      note.color,
+      DateTimeUtil.toEpochMillis(note.date)
+    )
+  }
+
+  override suspend fun updateNote(note: Note) {
+    queries.updateNote(
+      note.id,
+      note.title,
+      note.content,
+      note.color,
+      DateTimeUtil.toEpochMillis(note.date)
+    )
   }
 
   override suspend fun getNoteById(id: Long): Note? {

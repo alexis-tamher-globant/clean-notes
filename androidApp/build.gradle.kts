@@ -44,6 +44,9 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.5.1")
 
     implementation(Kotlin.DateTime)
+    implementation(Koin.Core)
+    implementation(Koin.Android)
+    implementation(Koin.AndroidCompose)
 
     implementation(Navigation.Compose)
     implementation(LifeCycle.ViewModelKtx)

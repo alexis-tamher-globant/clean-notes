@@ -16,4 +16,3 @@ dependencyResolutionManagement {
 rootProject.name = "CleanNotes"
 include(":androidApp")
 include(":shared")
-include(":local_storage")

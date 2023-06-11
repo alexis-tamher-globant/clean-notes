@@ -24,14 +24,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alexdev.cleannotes.android.presentation.note.SearchBar
 import com.alexdev.cleannotes.android.presentation.note.note_item.NoteItem
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun NoteListScreen(
   onNoteTapped: (Long?) -> Unit,
-  viewModel: NoteListViewModel = viewModel()
+  viewModel: NoteListViewModel = getViewModel()
 ) {
 
   val state by viewModel.state.collectAsState()
@@ -85,6 +85,16 @@ fun NoteListScreen(
         )
       }
 
+      if (state.notes.isEmpty())
+        Box(
+          modifier = Modifier.fillMaxSize()
+        ) {
+          Text(
+            text = "There are no notes yet\nAdd some note... :D",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.align(Alignment.Center)
+          )
+        }
       LazyColumn {
         items(items = state.notes) { note ->
           Box(modifier = Modifier.padding(12.dp)) {

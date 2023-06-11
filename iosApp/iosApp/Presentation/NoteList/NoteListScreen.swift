@@ -13,7 +13,7 @@ struct NoteListScreen: View {
     
     @StateObject var viewModel = NoteListViewModel()
     @State private var isActive: Bool = false
-    @State private var noteId: Int64 = -1
+    @State private var noteId: Int64? = nil
     
     var body: some View {
         VStack {
@@ -40,16 +40,20 @@ struct NoteListScreen: View {
                     }
                 )
             }
+            if viewModel.notes.isEmpty {
+                Text("There are no notes yet\nAdd some note... :D")
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            }
             List {
                 ForEach(viewModel.notes, id: \.self.id) { note in
                     Button(action: {
+                        noteId = note.id?.int64Value
                         isActive.toggle()
-                        noteId = note.id
                     }) {
                         NoteItem(
                             note: note,
                             onDeleteTapped: {
-                                viewModel.deleteNote(id: note.id)
+                                viewModel.deleteNote(id: note.id!.int64Value)
                             }
                         )
                     }
@@ -59,6 +63,7 @@ struct NoteListScreen: View {
             }
             .onAppear {
                 viewModel.loadNotes()
+                noteId = nil
             }
             .listStyle(.plain)
         }

@@ -4,7 +4,7 @@ import kotlinx.datetime.LocalDateTime
 
 
 data class Note (
-  val id: Long = -1,
+  val id: Long?,
   val title: String,
   val content: String,
   val color: Long,
